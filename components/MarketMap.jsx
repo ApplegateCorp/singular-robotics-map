@@ -17,6 +17,7 @@ export default function MarketMap({ initial, live }) {
   const [onlyVerify, setOnlyVerify] = useState(false);
   const [selected, setSelected] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [editing, setEditing] = useState(null);
   const [showImport, setShowImport] = useState(false);
 
   const countries = useMemo(
@@ -50,9 +51,20 @@ export default function MarketMap({ initial, live }) {
     return t;
   }, [companies]);
 
-  function onAdded(company) {
-    setCompanies((prev) => [...prev, company]);
+  function onSaved(company, wasEdit) {
+    setCompanies((prev) =>
+      wasEdit
+        ? prev.map((c) => (c.id === company.id ? company : c))
+        : [...prev, company]
+    );
     setShowAdd(false);
+    setEditing(null);
+    setSelected(null);
+  }
+
+  function onDeleted(company) {
+    setCompanies((prev) => prev.filter((c) => c.id !== company.id));
+    setSelected(null);
   }
   function onImported(list) {
     setCompanies((prev) => {
@@ -181,8 +193,17 @@ export default function MarketMap({ initial, live }) {
         <span>Singular Capital Partners &middot; Confidential</span>
       </div>
 
-      {selected && <CompanyDrawer company={selected} onClose={() => setSelected(null)} />}
-      {showAdd && <AddCompanyModal onClose={() => setShowAdd(false)} onAdded={onAdded} live={live} />}
+      {selected && (
+        <CompanyDrawer
+          company={selected}
+          onClose={() => setSelected(null)}
+          onEdit={(c) => { setSelected(null); setEditing(c); }}
+          onDeleted={onDeleted}
+          live={live}
+        />
+      )}
+      {showAdd && <AddCompanyModal onClose={() => setShowAdd(false)} onSaved={onSaved} live={live} />}
+      {editing && <AddCompanyModal existing={editing} onClose={() => setEditing(null)} onSaved={onSaved} live={live} />}
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImported={onImported} live={live} />}
     </div>
   );

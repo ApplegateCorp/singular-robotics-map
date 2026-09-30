@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { CATEGORIES, EMPTY_COMPANY, MET_STATES } from "../lib/taxonomy";
 
-export default function AddCompanyModal({ onClose, onAdded, live }) {
-  const [form, setForm] = useState({ ...EMPTY_COMPANY });
+export default function AddCompanyModal({ onClose, onSaved, live, existing = null }) {
+  const isEdit = Boolean(existing);
+  const [form, setForm] = useState(isEdit ? { ...EMPTY_COMPANY, ...existing } : { ...EMPTY_COMPANY });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
@@ -18,15 +19,15 @@ export default function AddCompanyModal({ onClose, onAdded, live }) {
     try {
       if (live) {
         const res = await fetch("/api/companies", {
-          method: "POST",
+          method: isEdit ? "PATCH" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(isEdit ? { ...form, id: existing.id } : form),
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || "Save failed");
-        onAdded(json.company);
+        onSaved(json.company, isEdit);
       } else {
-        onAdded({ ...form, id: `local-${Date.now()}` });
+        onSaved(isEdit ? form : { ...form, id: `local-${Date.now()}` }, isEdit);
       }
     } catch (e2) {
       setErr(e2.message);
@@ -39,10 +40,11 @@ export default function AddCompanyModal({ onClose, onAdded, live }) {
     <>
       <div className="scrim" onClick={onClose} />
       <form className="modal" onSubmit={submit}>
-        <h3>Add a company</h3>
+        <h3>{isEdit ? `Edit ${existing.name}` : "Add a company"}</h3>
         <p className="hint">
-          Put it in the right section and it shows up for everyone. If you have met them, say so and
-          who, that is what drives the colour.
+          {isEdit
+            ? "Changes save straight to the shared database. Everyone sees them on their next reload, no deploy needed."
+            : "Put it in the right section and it shows up for everyone. If you have met them, say so and who, that is what drives the colour."}
         </p>
         <div className="fgrid">
           <div className="f"><label>Name</label><input value={form.name} onChange={set("name")} placeholder="Acme Robotics" /></div>
@@ -62,7 +64,7 @@ export default function AddCompanyModal({ onClose, onAdded, live }) {
             </select>
           </div>
           <div className="f"><label>Met by</label><input value={form.met_by} onChange={set("met_by")} placeholder="Augustin, Lorenzo" /></div>
-          <div className="f"><label>Met on</label><input type="date" value={form.met_date} onChange={set("met_date")} /></div>
+          <div className="f"><label>Met on</label><input type="date" value={form.met_date || ""} onChange={set("met_date")} /></div>
           <div className="f"><label>Total raised</label><input value={form.total_raised} onChange={set("total_raised")} placeholder="$42M" /></div>
           <div className="f"><label>Last round</label><input value={form.last_round} onChange={set("last_round")} placeholder="Series A" /></div>
           <div className="f"><label>Last round size</label><input value={form.last_round_size} onChange={set("last_round_size")} placeholder="$18M" /></div>
@@ -75,7 +77,9 @@ export default function AddCompanyModal({ onClose, onAdded, live }) {
         {!live && <p className="hint" style={{ marginTop: 14, marginBottom: 0 }}>Supabase is not configured, so this stays in your browser only.</p>}
         <div className="modal-actions">
           <button type="button" onClick={onClose}>Cancel</button>
-          <button type="submit" className="primary" disabled={busy}>{busy ? "Saving..." : "Add company"}</button>
+          <button type="submit" className="primary" disabled={busy}>
+            {busy ? "Saving..." : isEdit ? "Save changes" : "Add company"}
+          </button>
         </div>
       </form>
     </>

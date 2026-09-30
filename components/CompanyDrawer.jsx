@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { CATEGORIES, MET_STATES } from "../lib/taxonomy";
 
 const MET_COLOR = { augustin: "var(--met-self)", team: "var(--met-team)", none: "var(--met-none)" };
@@ -13,9 +14,33 @@ function Row({ k, v }) {
   );
 }
 
-export default function CompanyDrawer({ company: c, onClose }) {
+export default function CompanyDrawer({ company: c, onClose, onEdit, onDeleted, live }) {
   const cat = CATEGORIES.find((x) => x.id === c.category);
   const met = MET_STATES[c.met] ?? MET_STATES.none;
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  async function doDelete() {
+    setBusy(true);
+    setErr("");
+    try {
+      if (live) {
+        const res = await fetch("/api/companies", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: c.id }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || "Delete failed");
+      }
+      onDeleted(c);
+    } catch (e) {
+      setErr(e.message);
+      setBusy(false);
+    }
+  }
+
   return (
     <>
       <div className="scrim" onClick={onClose} />
@@ -61,6 +86,28 @@ export default function CompanyDrawer({ company: c, onClose }) {
             <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "var(--grey3)", margin: 0 }}>{c.notes}</p>
           </>
         ) : null}
+
+        <div style={{ marginTop: 28, paddingTop: 18, borderTop: "1px solid var(--line)", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <button onClick={() => onEdit(c)}>Edit</button>
+          {!confirming ? (
+            <button className="ghost" onClick={() => setConfirming(true)} style={{ color: "var(--met-none)" }}>
+              Delete
+            </button>
+          ) : (
+            <>
+              <span style={{ fontSize: 11.5, color: "var(--grey2)" }}>Delete {c.name} for everyone?</span>
+              <button onClick={() => setConfirming(false)} disabled={busy}>Keep</button>
+              <button
+                onClick={doDelete}
+                disabled={busy}
+                style={{ background: "var(--met-none)", borderColor: "var(--met-none)" }}
+              >
+                {busy ? "Deleting..." : "Yes, delete"}
+              </button>
+            </>
+          )}
+        </div>
+        {err && <p className="err">{err}</p>}
       </aside>
     </>
   );
