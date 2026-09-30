@@ -41,3 +41,36 @@ export async function POST(req) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ company: data });
 }
+
+export async function PATCH(req) {
+  const sb = serviceClient();
+  if (!sb) return NextResponse.json({ error: "Supabase is not configured on the server." }, { status: 500 });
+
+  let body;
+  try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 }); }
+
+  const id = body?.id;
+  if (!id) return NextResponse.json({ error: "An id is required to edit a company." }, { status: 400 });
+
+  const row = sanitise(body);
+  if (!row.name) return NextResponse.json({ error: "A name is required." }, { status: 400 });
+
+  const { data, error } = await sb.from("companies").update(row).eq("id", id).select().single();
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ company: data });
+}
+
+export async function DELETE(req) {
+  const sb = serviceClient();
+  if (!sb) return NextResponse.json({ error: "Supabase is not configured on the server." }, { status: 500 });
+
+  let body;
+  try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 }); }
+
+  const id = body?.id;
+  if (!id) return NextResponse.json({ error: "An id is required to delete a company." }, { status: 400 });
+
+  const { error } = await sb.from("companies").delete().eq("id", id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true, id });
+}
