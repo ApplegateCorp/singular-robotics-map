@@ -489,7 +489,7 @@
   "last_meeting": "2026-03-06",
   "meetings": 2,
   "met": "team",
-  "met_by": "Eva, Lorenzo"
+  "met_by": "Lorenzo, Eva"
  },
  "polysense": {
   "id": 293559777,
@@ -558,10 +558,10 @@
   "owners": "Eva Mayoud, Augustin Applegate, Raffi Kamber",
   "reason": "Founder, Not a Fit",
   "last_contact": "2025-12-31 by Eva Mayoud (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2025-06-24",
+  "meetings": 4,
+  "met": "augustin",
+  "met_by": "Augustin, Raffi, Eva"
  },
  "anybotics": {
   "id": 136339576,
@@ -582,10 +582,10 @@
   "owners": "Maud Larbey",
   "reason": "",
   "last_contact": "2024-07-16 by Eva Mayoud (meeting)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2024-07-16",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Eva"
  },
  "wandelbots": {
   "id": 132103019,
@@ -606,10 +606,10 @@
   "owners": "Raffi Kamber, Elina Rayberg",
   "reason": "Too Late",
   "last_contact": "",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2023-11-07",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Elina"
  },
  "swiss-mile": {
   "id": 291912418,
@@ -642,10 +642,10 @@
   "owners": "Linda Ling",
   "reason": "",
   "last_contact": "2022-10-13 by Linda Ling (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2022-03-01",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Linda"
  },
  "synapticon": {
   "id": 1573436,
@@ -702,10 +702,10 @@
   "owners": "Eva Mayoud",
   "reason": "",
   "last_contact": "2024-02-22 by Eva Mayoud (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2024-02-22",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Eva"
  },
  "arculus": {
   "id": 111634498,
@@ -765,7 +765,7 @@
   "last_meeting": "2025-11-17",
   "meetings": 2,
   "met": "team",
-  "met_by": "Lorenzo, Jeremy"
+  "met_by": "Jeremy, Lorenzo"
  },
  "progressive robotics": {
   "id": 291382576,
@@ -906,10 +906,10 @@
   "owners": "Maud Larbey",
   "reason": "Not a Fit",
   "last_contact": "2026-07-31 by Jeremy Uzan (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2025-06-16",
+  "meetings": 2,
+  "met": "team",
+  "met_by": "Jeremy, Maud"
  },
  "lexio robotics": {
   "id": 312985089,
@@ -1002,10 +1002,10 @@
   "owners": "Maud Larbey",
   "reason": "",
   "last_contact": "2025-01-14 by Maud Larbey (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2025-01-14",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Maud"
  },
  "phinxt robotics": {
   "id": 286374663,
@@ -1050,10 +1050,10 @@
   "owners": "Eva Mayoud, Raffi Kamber",
   "reason": "",
   "last_contact": "2026-06-17 by Carolina Neri (email)",
-  "last_meeting": "",
-  "meetings": 0,
-  "met": "none",
-  "met_by": ""
+  "last_meeting": "2024-10-03",
+  "meetings": 1,
+  "met": "team",
+  "met_by": "Raffi, Eva"
  },
  "sentinel eagle": {
   "id": 311219459,
