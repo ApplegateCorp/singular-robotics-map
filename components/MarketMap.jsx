@@ -5,6 +5,7 @@ import { CATEGORIES, MET_STATES } from "../lib/taxonomy";
 import CompanyDrawer from "./CompanyDrawer";
 import AddCompanyModal from "./AddCompanyModal";
 import ImportModal from "./ImportModal";
+import { withAffinity, AFFINITY_STATUSES } from "../lib/affinity";
 
 const MET_COLOR = { augustin: "var(--met-self)", team: "var(--met-team)", none: "var(--met-none)" };
 
@@ -13,6 +14,7 @@ export default function MarketMap({ initial, live }) {
   const [q, setQ] = useState("");
   const [country, setCountry] = useState("");
   const [vertical, setVertical] = useState("");
+  const [affStatus, setAffStatus] = useState("");
   const [hidden, setHidden] = useState({});
   const [onlyVerify, setOnlyVerify] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -36,6 +38,7 @@ export default function MarketMap({ initial, live }) {
       if (onlyVerify && c.pb_confidence !== "medium") return false;
       if (country && c.country !== country) return false;
       if (vertical && c.vertical !== vertical) return false;
+      if (affStatus && (c.aff?.status || "Not in Affinity") !== affStatus) return false;
       if (!needle) return true;
       return [c.name, c.description, c.country, c.vertical, c.notes, c.lead_investors]
         .filter(Boolean)
@@ -43,7 +46,7 @@ export default function MarketMap({ initial, live }) {
         .toLowerCase()
         .includes(needle);
     });
-  }, [companies, q, country, vertical, hidden, onlyVerify]);
+  }, [companies, q, country, vertical, affStatus, hidden, onlyVerify]);
 
   const counts = useMemo(() => {
     const t = { augustin: 0, team: 0, none: 0 };
@@ -54,8 +57,8 @@ export default function MarketMap({ initial, live }) {
   function onSaved(company, wasEdit) {
     setCompanies((prev) =>
       wasEdit
-        ? prev.map((c) => (c.id === company.id ? company : c))
-        : [...prev, company]
+        ? prev.map((c) => (c.id === company.id ? withAffinity(company) : c))
+        : [...prev, withAffinity(company)]
     );
     setShowAdd(false);
     setEditing(null);
@@ -108,6 +111,10 @@ export default function MarketMap({ initial, live }) {
           <option value="">All verticals</option>
           {verticals.map((v) => <option key={v} value={v}>{v}</option>)}
         </select>
+        <select value={affStatus} onChange={(e) => setAffStatus(e.target.value)}>
+          <option value="">All Affinity statuses</option>
+          {AFFINITY_STATUSES.map((v) => <option key={v} value={v}>{v}</option>)}
+        </select>
         <button
           className={onlyVerify ? "primary" : ""}
           onClick={() => setOnlyVerify((v) => !v)}
@@ -115,8 +122,8 @@ export default function MarketMap({ initial, live }) {
         >
           Needs verification
         </button>
-        {(q || country || vertical || onlyVerify) && (
-          <button className="ghost" onClick={() => { setQ(""); setCountry(""); setVertical(""); setOnlyVerify(false); }}>
+        {(q || country || vertical || affStatus || onlyVerify) && (
+          <button className="ghost" onClick={() => { setQ(""); setCountry(""); setVertical(""); setAffStatus(""); setOnlyVerify(false); }}>
             Clear
           </button>
         )}
@@ -162,6 +169,7 @@ export default function MarketMap({ initial, live }) {
                   </span>
                   <span className="cdesc">{c.description}</span>
                   <span className="cfoot">
+                    {c.aff?.status ? <span className="affpill">{c.aff.status}</span> : null}
                     {c.total_raised ? <span className="raised">{c.total_raised} raised</span> : null}
                     {c.last_round ? <span>{c.last_round}</span> : null}
                     {c.pb_confidence === "medium" ? <span title="PitchBook match uncertain" style={{ color: "var(--met-none)" }}>verify</span> : null}

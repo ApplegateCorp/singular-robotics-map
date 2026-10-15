@@ -56,6 +56,27 @@ export default function CompanyDrawer({ company: c, onClose, onEdit, onDeleted, 
           {c.description}
         </p>
 
+        {c.aff ? (
+          <div style={{ margin: "4px 0 18px", padding: "12px 14px", background: "#111", border: "1px solid var(--line)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <span style={{ fontSize: 10.5, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--grey2)" }}>Affinity</span>
+              {c.aff.url ? (
+                <a href={c.aff.url} target="_blank" rel="noreferrer" style={{ fontSize: 11.5, color: "var(--white)", border: "1px solid var(--grey1)", padding: "4px 9px" }}>
+                  Open card
+                </a>
+              ) : <span style={{ fontSize: 11, color: "var(--grey1)" }}>No Affinity card</span>}
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
+              {c.aff.status}{c.aff.reason ? <span style={{ fontWeight: 400, color: "var(--grey2)" }}> &middot; {c.aff.reason}</span> : null}
+            </div>
+            {c.aff.owners ? <div style={{ fontSize: 11.5, color: "var(--grey3)", lineHeight: 1.6 }}>Owners: {c.aff.owners}</div> : null}
+            <div style={{ fontSize: 11.5, color: "var(--grey3)", lineHeight: 1.6 }}>
+              Meetings in last 12 months: {c.aff.meetings || 0}{c.aff.last_meeting ? ` (last ${c.aff.last_meeting})` : ""}
+            </div>
+            {c.aff.last_contact ? <div style={{ fontSize: 11.5, color: "var(--grey3)", lineHeight: 1.6 }}>Last contact: {c.aff.last_contact}</div> : null}
+          </div>
+        ) : null}
+
         <Row k="Website" v={c.url ? <a href={c.url} target="_blank" rel="noreferrer">{c.url.replace(/^https?:\/\//, "")}</a> : ""} />
         <Row k="Total raised" v={c.total_raised} />
         <Row k="Last round" v={[c.last_round, c.last_round_size].filter(Boolean).join(" · ")} />
