@@ -1330,5 +1330,29 @@
   "meetings": 1,
   "met": "augustin",
   "met_by": "Laura, Augustin"
+ },
+ "mosaico": {
+  "id": 307374247,
+  "url": "https://singular.affinity.co/companies/307374247",
+  "status": "Nurture",
+  "owners": "Augustin Applegate, Maud Larbey",
+  "reason": "",
+  "last_contact": "2026-10-08 by Lorenzo Cerchi (meeting)",
+  "last_meeting": "2026-10-08",
+  "meetings": 3,
+  "met": "augustin",
+  "met_by": "Augustin, Maud, Lorenzo"
+ },
+ "mosiaco": {
+  "id": 307374247,
+  "url": "https://singular.affinity.co/companies/307374247",
+  "status": "Nurture",
+  "owners": "Augustin Applegate, Maud Larbey",
+  "reason": "",
+  "last_contact": "2026-10-08 by Lorenzo Cerchi (meeting)",
+  "last_meeting": "2026-10-08",
+  "meetings": 3,
+  "met": "augustin",
+  "met_by": "Augustin, Maud, Lorenzo"
  }
 }
