@@ -133,3 +133,5 @@ code { background: #141414; padding: 1px 5px; font-size: 11px; color: var(--grey
   .fgrid { grid-template-columns: 1fr; }
   .legend { margin-left: 0; }
 }
+
+.affpill { font-size: 9.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--grey3); border: 1px solid var(--grey1); padding: 1px 5px; }
