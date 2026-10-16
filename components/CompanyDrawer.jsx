@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CATEGORIES, MET_STATES } from "../lib/taxonomy";
+import { LABEL_COLOR } from "../lib/affinity";
 
 const MET_COLOR = { augustin: "var(--met-self)", team: "var(--met-team)", none: "var(--met-none)" };
 
@@ -51,6 +52,13 @@ export default function CompanyDrawer({ company: c, onClose, onEdit, onDeleted, 
         <span className="pill" style={{ color: MET_COLOR[c.met], borderColor: MET_COLOR[c.met] }}>
           {met.label}
         </span>
+        {c.labels?.length ? (
+          <span className="lbls" style={{ display: "inline-flex", marginLeft: 8, verticalAlign: "middle" }}>
+            {c.labels.map((l) => (
+              <span key={l} className="lbl" style={{ color: LABEL_COLOR[l], borderColor: LABEL_COLOR[l] }}>{l}</span>
+            ))}
+          </span>
+        ) : null}
 
         <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--grey3)", marginTop: 0 }}>
           {c.description}
