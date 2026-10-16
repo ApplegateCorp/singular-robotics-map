@@ -135,3 +135,7 @@ code { background: #141414; padding: 1px 5px; font-size: 11px; color: var(--grey
 }
 
 .affpill { font-size: 9.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--grey3); border: 1px solid var(--grey1); padding: 1px 5px; }
+
+/* Internal labels */
+.lbls { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 4px; }
+.lbl { font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; border: 1px solid; padding: 1px 6px; line-height: 1.5; white-space: nowrap; }
